@@ -106,7 +106,7 @@ int main(int argc, const char * argv[]) {
         sourceAddr.mScope = kAudioDevicePropertyScopeOutput;
         sourceAddr.mElement = kAudioObjectPropertyElementMaster;
 
-        NSString *output = [@"hda-verb 0x18 SET_PIN_WIDGET_CONTROL 0x24" runAsCommand];
+        NSString *output = [@"/usr/local/bin/alc-verb 0x18 SET_PIN_WIDGET_CONTROL 0x24" runAsCommand];
 
         AudioObjectAddPropertyListenerBlock(defaultDevice, &sourceAddr, dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(UInt32 inNumberAddresses, const AudioObjectPropertyAddress * inAddresses) {
 
@@ -116,7 +116,7 @@ int main(int argc, const char * argv[]) {
             if (bDataSourceId == 'hdpn') {
                 // 仅用于修复电池状态下休眠唤醒后耳机无法使用问题
                 NSLog(@"Headphones inserted! Fixing!");
-                NSString *output = [@"hda-verb 0x18 SET_PIN_WIDGET_CONTROL 0x24" runAsCommand];
+                NSString *output = [@"/usr/local/bin/alc-verb 0x18 SET_PIN_WIDGET_CONTROL 0x24" runAsCommand];
             }
         });
 
@@ -124,7 +124,6 @@ int main(int argc, const char * argv[]) {
             [task performWork];
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, kRunLoopWaitTime, false);
         }
-//        [task release];
 
         NSLog(@"Daemon exiting");
     }
